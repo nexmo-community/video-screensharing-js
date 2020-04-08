@@ -1,3 +1,5 @@
+let session;
+
 fetch(location.pathname, { method: "POST" })
   .then(res => {
     return res.json();
@@ -11,7 +13,7 @@ fetch(location.pathname, { method: "POST" })
   .catch(handleCallback)
 
 function initializeSession(apiKey, sessionId, token) {
-  const session = OT.initSession(apiKey, sessionId);
+  session = OT.initSession(apiKey, sessionId);
   
   const publisher = OT.initPublisher(
     "publisher",
@@ -51,4 +53,33 @@ function handleCallback(error) {
   } else {
     console.log("callback success");
   }
+}
+
+const shareScreenButton = document.getElementById("share-screen");
+shareScreenButton.addEventListener("click", event => {
+  OT.checkScreenSharingCapability(response => {
+    if(!response.supported || !response.extensionRegistered) {
+      alert("Screen sharing not supported")
+    } else if (!response.extensionInstalled) {
+      alert("Browser requires extension")
+    } else {
+      shareScreen();
+    }
+  })
+});
+
+function shareScreen() {
+  const publisher = OT.initPublisher(
+    "screen-preview",
+    {
+      insertMode: "append",
+      width: "100%",
+      height: "100%",
+      videoSource: "screen"
+    },
+    handleCallback
+  )
+  
+  session.publish(publisher, handleCallback)
+  
 }
