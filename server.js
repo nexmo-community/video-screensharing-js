@@ -37,7 +37,13 @@ function generateToken(roomName, response) {
     role: "publisher",
     data: `roomname=${roomName}`
   };
-  let token = OT.generateToken()
+  let token = OT.generateToken(sessions[roomName], tokenOptions);
+  response.status(200);
+  response.send({
+    sessionId: sessions[roomName],
+    token: token,
+    apiKey: process.env.API_KEY
+  })
 }
 
 const listener = app.listen(process.env.PORT, () => {
