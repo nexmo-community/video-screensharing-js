@@ -56,7 +56,6 @@ function handleCallback(error) {
 }
 
 let screenSharePublisher;
-
 const shareScreenButton = document.getElementById("share-screen");
 const stopSharingScreenButton = document.getElementById("stop-share-screen");
 
@@ -67,7 +66,20 @@ shareScreenButton.addEventListener("click", event => {
     } else if (response.extensionInstalled === false) {
       alert("Browser requires extension")
     } else {
-      shareScreen();
+      screenSharePublisher = OT.initPublisher(
+        "screen-preview",
+        {
+          insertMode: "append",
+          width: "100%",
+          height: "100%",
+          videoSource: "screen",
+          publishAudio: true
+        },
+        handleCallback
+      )
+      session.publish(screenSharePublisher, handleCallback)
+      shareScreenButton.classList.toggle('hidden')
+      stopSharingScreenButton.classList.toggle('hidden')
     }
   })
 });
@@ -77,20 +89,3 @@ stopSharingScreenButton.addEventListener("click", event => {
   shareScreenButton.classList.toggle('hidden')
   stopSharingScreenButton.classList.toggle('hidden')
 })
-
-function shareScreen() {
-  screenSharePublisher = OT.initPublisher(
-    "screen-preview",
-    {
-      insertMode: "append",
-      width: "100%",
-      height: "100%",
-      videoSource: "screen",
-      publishAudio: true
-    },
-    handleCallback
-  )
-  session.publish(screenSharePublisher, handleCallback)
-  shareScreenButton.classList.toggle('hidden')
-  stopSharingScreenButton.classList.toggle('hidden')
-}
