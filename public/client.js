@@ -58,6 +58,8 @@ function handleCallback(error) {
 let screenSharePublisher;
 
 const shareScreenButton = document.getElementById("share-screen");
+const stopSharingScreenButton = document.getElementById("stop-share-screen");
+
 shareScreenButton.addEventListener("click", event => {
   OT.checkScreenSharingCapability(response => {
     if(!response.supported || response.extensionRegistered === false) {
@@ -69,6 +71,10 @@ shareScreenButton.addEventListener("click", event => {
     }
   })
 });
+
+stopSharingScreenButton.addEventListener("click", event => {
+  screenSharePublisher.destroy();
+})
 
 function shareScreen() {
   screenSharePublisher = OT.initPublisher(
@@ -83,5 +89,4 @@ function shareScreen() {
     handleCallback
   )
   session.publish(screenSharePublisher, handleCallback)
-  
 }
