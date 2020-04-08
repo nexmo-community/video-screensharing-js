@@ -74,6 +74,8 @@ shareScreenButton.addEventListener("click", event => {
 
 stopSharingScreenButton.addEventListener("click", event => {
   screenSharePublisher.destroy();
+  shareScreenButton.classList.toggle('hidden')
+  stopSharingScreenButton.classList.toggle('hidden')
 })
 
 function shareScreen() {
@@ -89,4 +91,6 @@ function shareScreen() {
     handleCallback
   )
   session.publish(screenSharePublisher, handleCallback)
+  shareScreenButton.classList.toggle('hidden')
+  stopSharingScreenButton.classList.toggle('hidden')
 }

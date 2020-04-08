@@ -12,7 +12,9 @@ html {
 }
  
 body {
-  position: relative
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
  
 header {
@@ -49,13 +51,20 @@ button {
   display: flex;
 }
  
-.publisher {
+.publisher,
+.screen-preview {
   position: absolute;
   width: 25vmin;
   height: 25vmin;
   min-width: 8em;
   min-height: 8em;
-  left: 0;
-  bottom: 0;
+  align-self: flex-end;
 }
- 
+
+.screen-preview {
+  right: 0;
+}
+
+.hidden {
+  display: none;
+}
