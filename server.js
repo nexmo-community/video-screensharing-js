@@ -1,34 +1,45 @@
-// server.js
-// where your node app starts
-
-// we've started you off with Express (https://expressjs.com/)
-// but feel free to use whatever libraries or frameworks you'd like through `package.json`.
 const express = require("express");
 const app = express();
 
-// our default array of dreams
-const dreams = [
-  "Find and count some sheep",
-  "Climb a really tall mountain",
-  "Wash the dishes"
-];
+const OpenTok = require("opentok");
+const OT = new OpenTok(process.env.API_KEY, process.env.API_SECRET);
 
-// make all the files in 'public' available
-// https://expressjs.com/en/starter/static-files.html
 app.use(express.static("public"));
 
-// https://expressjs.com/en/starter/basic-routing.html
 app.get("/", (request, response) => {
+  response.sendFile(__dirname + "/views/landing.html");
+});
+ 
+app.get("/session/:name", (request, response) => {
   response.sendFile(__dirname + "/views/index.html");
 });
 
-// send the default array of dreams to the webpage
-app.get("/dreams", (request, response) => {
-  // express helps us take JS objects and send them as JSON
-  response.json(dreams);
-});
+let sessions = {};
 
-// listen for requests :)
+app.post("/session/:name", (request, response) => {
+  const roomName = request.params.name;
+  if(sessions[roomName]) {
+    generateToken(roomName, response);
+  } else {
+    OT.createSession((error, session) => {
+      if(error) {
+        console.log("Error creating session:", error)
+      } else {
+        sessions[roomName] = session.sessionId;
+        generateToken(roomName, response);
+      }
+    })
+  }
+})
+
+function generateToken(roomName, response) {
+  const tokenOptions = {
+    role: "publisher",
+    data: `roomname=${roomName}`
+  };
+  let token = OT.generateToken()
+}
+
 const listener = app.listen(process.env.PORT, () => {
   console.log("Your app is listening on port " + listener.address().port);
 });

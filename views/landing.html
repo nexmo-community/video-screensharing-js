@@ -22,11 +22,23 @@
     </header>
  
     <main>
-      <div id="subscriber" class="subscriber"></div>
-      <div id="publisher" class="publisher"></div>
+      <form id="registration">
+        <label for="room-name">Room</label>
+        <input
+          id="room-name"
+          name="room-name"
+          placeholder="Enter room name"
+          required
+        />
+        <button>Enter</button>
+      </form>
     </main>
- 
-    <script src="https://static.opentok.com/v2/js/opentok.min.js"></script>
-    <script src="/client.js"></script>
+    <script>
+      const form = document.getElementById("registration");
+      form.addEventListener("submit", event => {
+        event.preventDefault();
+        location.pathname = `/session/${form.elements["room-name"].value}`;
+      });
+    </script>
   </body>
 </html>
