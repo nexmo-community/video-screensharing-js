@@ -55,12 +55,14 @@ function handleCallback(error) {
   }
 }
 
+let screenSharePublisher;
+
 const shareScreenButton = document.getElementById("share-screen");
 shareScreenButton.addEventListener("click", event => {
   OT.checkScreenSharingCapability(response => {
-    if(!response.supported || !response.extensionRegistered) {
+    if(!response.supported || response.extensionRegistered === false) {
       alert("Screen sharing not supported")
-    } else if (!response.extensionInstalled) {
+    } else if (response.extensionInstalled === false) {
       alert("Browser requires extension")
     } else {
       shareScreen();
@@ -69,17 +71,17 @@ shareScreenButton.addEventListener("click", event => {
 });
 
 function shareScreen() {
-  const publisher = OT.initPublisher(
+  screenSharePublisher = OT.initPublisher(
     "screen-preview",
     {
       insertMode: "append",
       width: "100%",
       height: "100%",
-      videoSource: "screen"
+      videoSource: "screen",
+      publishAudio: true
     },
     handleCallback
   )
-  
-  session.publish(publisher, handleCallback)
+  session.publish(screenSharePublisher, handleCallback)
   
 }
