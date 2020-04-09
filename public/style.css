@@ -51,8 +51,7 @@ button {
   display: flex;
 }
  
-.publisher,
-.screen-preview {
+.publisher {
   position: absolute;
   width: 25vmin;
   height: 25vmin;
@@ -62,6 +61,12 @@ button {
 }
 
 .screen-preview {
+  position: absolute;
+  width: 25vmin;
+  height: 25vmin;
+  min-width: 8em;
+  min-height: 8em;
+  align-self: flex-end;
   right: 0;
 }
 
