@@ -1,5 +1,3 @@
-let session;
-
 fetch(location.pathname, { method: "POST" })
   .then(res => {
     return res.json();
@@ -11,6 +9,8 @@ fetch(location.pathname, { method: "POST" })
     initializeSession(apiKey, sessionId, token);
   })
   .catch(handleCallback)
+
+let session;
 
 function initializeSession(apiKey, sessionId, token) {
   session = OT.initSession(apiKey, sessionId);
