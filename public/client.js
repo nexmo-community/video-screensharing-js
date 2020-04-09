@@ -57,6 +57,7 @@ function handleCallback(error) {
 
 let screenSharePublisher;
 const shareScreenButton = document.getElementById("share-screen");
+const stopSharingScreenButton = document.getElementById("stop-sharing-screen");
 
 shareScreenButton.addEventListener("click", event => {
   OT.checkScreenSharingCapability(response => {
@@ -82,8 +83,6 @@ shareScreenButton.addEventListener("click", event => {
     }
   })
 });
-
-const stopSharingScreenButton = document.getElementById("stop-sharing-screen");
 
 stopSharingScreenButton.addEventListener("click", event => {
   screenSharePublisher.destroy();
